@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section
+    class="mx-auto flex h-[calc(100vh-10.5rem)] min-h-168 w-full max-w-[1900px] flex-col overflow-hidden bg-stone-100">
+    <div
+        class="border-y border-stone-200 bg-white/95 px-4 py-4 shadow-[0_10px_35px_rgba(15,23,42,0.04)] backdrop-blur sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center gap-3">
+            <input type="text" placeholder="Irgendwo in Zürich"
+                   class="min-w-[18rem] flex-1 rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-medium text-slate-600 shadow-sm" />
+                
+            
+            <button
+            class="rounded-full border border-blue-200 bg-blue-50 px-5 py-4 text-sm font-semibold text-blue-700 shadow-sm">Alugar</button>
+            <button
+            class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm">Aluguel</button>
+            <button
+                class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm">Tipos
+                de imovel</button>
+                <button
+                    class="rounded-full border border-blue-200 bg-blue-50 px-5 py-4 text-sm font-semibold text-blue-700 shadow-sm">1+
+                    quartos</button>
+                    <button
+                        class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm">Mais
+                        filtros</button>
+                        <button
+                            class="rounded-full border border-stone-200 bg-white px-5 py-4 text-sm font-semibold text-slate-900 shadow-sm">Criar
+                            alerta de imovel</button>
+                        </div>
+                    </div>
+
+                    <div class="grid min-h-0 flex-1 gap-0 xl:grid-cols-[minmax(0,1.65fr)_minmax(22rem,0.95fr)]">
+                        <div class="min-h-0 overflow-y-auto bg-white px-4 py-8 sm:px-6 lg:px-8">
+                            <div class="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                                <div>
+                                    <p class="text-4xl font-semibold tracking-tight text-slate-900">Imoveis para alugar</p>
+                                    <p class="mt-2 max-w-2xl text-base leading-7 text-slate-500">Lista inspirada no QuintoAndar, com a
+                                        vitrine dominando a tela e o mapa funcionando como apoio de contexto.</p>
+                                    </div>
+
+                                    <div
+                                        class="inline-flex w-fit items-center rounded-full border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm">
+                                        Mais relevantes
+                                    </div>
+                                </div>
+
+                                <div id="cards" class="pb-6" hx-get="/properties/cards" hx-trigger="load" hx-target="#cards"
+                                     hx-swap="innerHTML">
+                                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
+                                        @for (var index = 0; index < 6; index++)
+                                        {
+                                            <div
+                                                class="animate-pulse overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm">
+                                                <div class="aspect-[1.3/1] bg-stone-200"></div>
+                                                <div class="space-y-3 p-5">
+                                                    <div class="h-3 w-1/3 rounded-full bg-stone-200"></div>
+                                                    <div class="h-4 w-5/6 rounded-full bg-stone-200"></div>
+                                                    <div class="h-4 w-2/3 rounded-full bg-stone-200"></div>
+                                                    <div class="h-12 rounded-2xl bg-stone-200"></div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <aside class="hidden min-h-0 border-l border-stone-200 bg-stone-100 xl:block">
+                                <div class="sticky top-0 h-[calc(100vh-14.5rem)] p-4">
+                                    <div
+                                        class="relative h-full overflow-hidden rounded-[2rem] border border-white/70 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.10)]">
+                                        <div class="pointer-events-none absolute inset-x-0 top-0 z-10 p-4">
+                                            <div
+                                                class="max-w-xs rounded-2xl bg-white/92 px-4 py-3 text-sm text-slate-700 shadow-lg shadow-slate-900/5 backdrop-blur">
+                                                O mapa ocupa menos espaco e acompanha a listagem como apoio visual.
+                                            </div>
+                                        </div>
+                                        <div id="map" class="h-full w-full"></div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </section>
+
+
+
+                    @section Scripts {
+                        <script src="/js/map.js"></script>
+                    }

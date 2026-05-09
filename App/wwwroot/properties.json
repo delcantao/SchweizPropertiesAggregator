@@ -1,0 +1,179 @@
+[
+  {
+    "id": 1,
+    "title": "Apartamento Moderno no Centro",
+    "price": 1250000,
+    "currency": "CHF",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 115,
+    "lat": 47.050168,
+    "lng": 8.309307,
+    "city": "Luzern",
+    "address": "Pilatusstrasse 12",
+    "images": [
+      "https://picsum.photos/seed/apt1a/800/600",
+      "https://picsum.photos/seed/apt1b/800/600",
+      "https://picsum.photos/seed/apt1c/800/600"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Cobertura com Vista para o Lago",
+    "price": 2850000,
+    "currency": "CHF",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "area": 240,
+    "lat": 47.048512,
+    "lng": 8.305921,
+    "city": "Luzern",
+    "address": "Haldenstrasse 8",
+    "images": [
+      "https://picsum.photos/seed/apt2a/800/600",
+      "https://picsum.photos/seed/apt2b/800/600",
+      "https://picsum.photos/seed/apt2c/800/600"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Studio Compacto e Moderno",
+    "price": 620000,
+    "currency": "CHF",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 42,
+    "lat": 47.053201,
+    "lng": 8.312110,
+    "city": "Luzern",
+    "address": "Baselstrasse 55",
+    "images": [
+      "https://picsum.photos/seed/apt3a/800/600",
+      "https://picsum.photos/seed/apt3b/800/600"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Casa Familiar com Jardim",
+    "price": 1980000,
+    "currency": "CHF",
+    "bedrooms": 5,
+    "bathrooms": 3,
+    "area": 310,
+    "lat": 47.044110,
+    "lng": 8.318994,
+    "city": "Luzern",
+    "address": "Meggerstrasse 22",
+    "images": [
+      "https://picsum.photos/seed/apt4a/800/600",
+      "https://picsum.photos/seed/apt4b/800/600",
+      "https://picsum.photos/seed/apt4c/800/600"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Apartamento Minimalista",
+    "price": 890000,
+    "currency": "CHF",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 78,
+    "lat": 47.056442,
+    "lng": 8.301122,
+    "city": "Luzern",
+    "address": "Zürichstrasse 77",
+    "images": [
+      "https://picsum.photos/seed/apt5a/800/600",
+      "https://picsum.photos/seed/apt5b/800/600"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Loft Industrial Reformado",
+    "price": 1540000,
+    "currency": "CHF",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 145,
+    "lat": 47.051221,
+    "lng": 8.296880,
+    "city": "Luzern",
+    "address": "Industriestrasse 4",
+    "images": [
+      "https://picsum.photos/seed/apt6a/800/600",
+      "https://picsum.photos/seed/apt6b/800/600",
+      "https://picsum.photos/seed/apt6c/800/600"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Casa Moderna nas Colinas",
+    "price": 3200000,
+    "currency": "CHF",
+    "bedrooms": 6,
+    "bathrooms": 4,
+    "area": 420,
+    "lat": 47.041550,
+    "lng": 8.325100,
+    "city": "Luzern",
+    "address": "Sonnenbergweg 14",
+    "images": [
+      "https://picsum.photos/seed/apt7a/800/600",
+      "https://picsum.photos/seed/apt7b/800/600",
+      "https://picsum.photos/seed/apt7c/800/600"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Apartamento Econômico",
+    "price": 540000,
+    "currency": "CHF",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "area": 50,
+    "lat": 47.057998,
+    "lng": 8.315778,
+    "city": "Luzern",
+    "address": "Bernstrasse 19",
+    "images": [
+      "https://picsum.photos/seed/apt8a/800/600",
+      "https://picsum.photos/seed/apt8b/800/600"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Duplex Luxuoso",
+    "price": 2650000,
+    "currency": "CHF",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "area": 260,
+    "lat": 47.047881,
+    "lng": 8.311500,
+    "city": "Luzern",
+    "address": "Nationalquai 3",
+    "images": [
+      "https://picsum.photos/seed/apt9a/800/600",
+      "https://picsum.photos/seed/apt9b/800/600",
+      "https://picsum.photos/seed/apt9c/800/600"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Apartamento com Sacada Panorâmica",
+    "price": 1320000,
+    "currency": "CHF",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "area": 122,
+    "lat": 47.049712,
+    "lng": 8.320444,
+    "city": "Luzern",
+    "address": "Seeburgstrasse 28",
+    "images": [
+      "https://picsum.photos/seed/apt10a/800/600",
+      "https://picsum.photos/seed/apt10b/800/600",
+      "https://picsum.photos/seed/apt10c/800/600"
+    ]
+  }
+]
