@@ -1,1 +1,1 @@
-dotnet ef dbcontext scaffold "Host=localhost;PORT=5432;Database=realestate;Username=postgres;Password=postgres" Npgs5ql.EntityFrameworkCore.PostgreSQL -o Entities --context dbContext --force
+dotnet ef dbcontext scaffold "Host=localhost;PORT=5432;Database=realestate;Username=postgres;Password=postgres" Npgsql.EntityFrameworkCore.PostgreSQL -o Entities --context AppDbContext --force

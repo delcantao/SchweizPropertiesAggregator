@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
@@ -33,8 +35,6 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("properties");
 
-            entity.HasIndex(e => e.Location, "idx_properties_location").HasMethod("gist");
-
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
@@ -51,6 +51,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Images)
                 .HasColumnType("jsonb")
                 .HasColumnName("images");
+            entity.Property(e => e.JsonOrig)
+                .HasColumnType("jsonb")
+                .HasColumnName("json_orig");
             entity.Property(e => e.Latitude).HasColumnName("latitude");
             entity.Property(e => e.Location)
                 .HasColumnType("geography(Point,4326)")

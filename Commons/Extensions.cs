@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Commons;
 
@@ -13,4 +14,10 @@ public static class Extensions
     {
         return JsonSerializer.Serialize(obj, options);
     }
+    public static string OnlyNumbersReturnNumber(this string text)
+    {
+        var number = text == null ? "0" : Regex.Replace(text, "[^0-9]", "");
+        return string.IsNullOrEmpty(number) ? "0" : number;
+    }
+
 }

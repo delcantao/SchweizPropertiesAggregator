@@ -1,4 +1,7 @@
 // O MapLibre estará disponível globalmente como 'maplibregl'
+
+
+
 const map = new maplibregl.Map({
   container: "map",
 
@@ -7,11 +10,61 @@ const map = new maplibregl.Map({
   center: [8.2275, 46.8182],
   zoom: 8,
 });
+
+let highlightedCardId = null;
+
+const highlightedCardStyle = {
+  outline: "3px solid #38bdf8",
+  outlineOffset: "2px",
+};
+
+function clearHighlightedCard() {
+  if (!highlightedCardId) {
+    return;
+  }
+
+  const previous = document.querySelector(
+    `[data-property-id="${highlightedCardId}"]`,
+  );
+
+  if (previous) {
+    previous.style.outline = "";
+    previous.style.outlineOffset = "";
+  }
+
+  highlightedCardId = null;
+}
+
+function highlightCard(propertyId) {
+  if (!propertyId) {
+    return;
+  }
+
+  if (highlightedCardId === propertyId) {
+    return;
+  }
+
+  clearHighlightedCard();
+
+  const card = document.querySelector(`[data-property-id="${propertyId}"]`);
+  if (!card) {
+    return;
+  }
+
+  card.style.outline = highlightedCardStyle.outline;
+  card.style.outlineOffset = highlightedCardStyle.outlineOffset;
+  highlightedCardId = propertyId;
+}
+
 map.on("error", (e) => {
   console.log("error debug", e);
 });
 
 map.on("moveend", async () => {
+  refresh();
+});
+
+function refresh() {
   const bounds = map.getBounds();
 
   const west = bounds.getWest();
@@ -21,8 +74,7 @@ map.on("moveend", async () => {
 
   refreshCards(west, south, east, north);
   refreshMap(west, south, east, north);
-});
-
+}
 map.on("load", async () => {
   const response = await fetch("/api/properties/map");
 
@@ -38,6 +90,7 @@ map.on("load", async () => {
   });
 
   addPropertyLayers();
+  // refresh();
 });
 
 function refreshCards(west, south, east, north) {
@@ -59,6 +112,10 @@ async function refreshMap(west, south, east, north) {
   const geojson = await response.json();
   const source = map.getSource("properties");
 
+  if (!source) {
+    console.error("Source not found", source);
+    return;
+  }
   source.setData(geojson);
 }
 
@@ -127,12 +184,12 @@ function addPropertyLayers() {
     const coordinates = feature.geometry.coordinates;
 
     const properties = feature.properties;
-
+    const images = JSON.parse(feature.properties.image); 
     const popupHtml = `
-        <div class="popup">
+        <div class="popup" hover-id="${feature.properties.id}">
 
             <img
-                src="${properties.image}"
+                src="${images[0]}"
                 style="width:100%; border-radius:12px;" />
 
             <h3>${properties.title}</h3>
@@ -146,4 +203,26 @@ function addPropertyLayers() {
 
     new maplibregl.Popup().setLngLat(coordinates).setHTML(popupHtml).addTo(map);
   });
+
+  map.on("click", "clusters", (e) => {
+    const currentZoom = map.getZoom();
+    const coordinates = e.features[0].geometry.coordinates;
+    map.easeTo({ center: coordinates, zoom: currentZoom + 2 });
+  });
+
+  map.on("mouseenter", "unclustered-point", () => {
+    map.getCanvas().style.cursor = "pointer";
+  });
+
+  map.on("mousemove", "unclustered-point", (e) => {
+    const feature = e.features?.[0];
+    highlightCard(feature?.properties?.id?.toString());
+  });
+
+  map.on("mouseleave", "unclustered-point", () => {
+    map.getCanvas().style.cursor = "";
+    clearHighlightedCard();
+  });
 }
+
+ 

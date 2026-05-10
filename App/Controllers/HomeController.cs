@@ -1,3 +1,4 @@
+using Commons;
 using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,10 +56,10 @@ public class HomeController(AppDbContext dbContext) : Controller
         .Take(50)
         .ToListAsync();
 
-    foreach (var property in properties)
-    {
-        property.Images = property.Images.ToJsonObject<List<string>>()!.First();
-    }
+    // foreach (var property in properties)
+    // {
+    //     property.Images = property.Images;
+    // }
     return PartialView("_CardsPartial", properties);
 }
 
@@ -80,10 +81,17 @@ public async Task<IActionResult> Map(
         .Take(1000)
         .ToListAsync();
 
-    foreach (var property in properties)
-    {
-        property.Images = property.Images.ToJsonObject<List<string>>()!.First();
-    }
+    // foreach (var property in properties)
+    // {
+    //     try
+    //     {
+    //         property.Images = property.Images.ToJsonObject<List<string>>()!.FirstOrDefault() ?? ;
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e);
+    //     }
+    // }
     
     
     var geojson = new

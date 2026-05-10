@@ -1,4 +1,6 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace Data.Entities;
 
@@ -28,5 +30,7 @@ public partial class Property
 
     public Point Location { get; set; } = null!;
 
-    public string Images { get; set; } = null!;
+    public List<string> Images { get; set; } = null!;
+
+    public string JsonOrig { get; set; } = null!; 
 }
