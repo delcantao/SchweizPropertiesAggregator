@@ -10,7 +10,7 @@ public class ComparisClient
 {
     private readonly HttpClient _httpClient;
     private const string BaseUrl = "https://www.comparis.ch";
-    public const string DirectoryResults = "/mnt/dados/repos/SchweizPropertiesAggregator/Scraper/results/";
+    public const string DirectoryResults = "/Users/fedelcantao/repos/PropertiesSchweiz/SchweizPropertiesAgreggator/Scraper/results"; // "/mnt/dados/repos/SchweizPropertiesAggregator/Scraper/results/";
     
         
     public ComparisClient()
@@ -122,6 +122,7 @@ public class ComparisClient
         var file = Path.Combine(ComparisClient.DirectoryResults,
             $"{request.Page}_{request.SearchParams.LocationSearchString}.json"); 
 
+        
         if (File.Exists(file))
         {
             return await File.ReadAllTextAsync(file);

@@ -14,7 +14,7 @@ public partial class Property
 
     public string Currency { get; set; } = null!;
 
-    public int Bedrooms { get; set; }
+    public double Bedrooms { get; set; }
 
     public int Bathrooms { get; set; }
 

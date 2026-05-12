@@ -6,8 +6,9 @@ namespace Scraper.Nominatim;
 public class NominatimClient
 {
     private readonly HttpClient _httpClient;
-    private const string BaseUrl = "http://192.168.1.68:8080"; 
-
+    private const string BaseUrl = "http://31.164.61.221:8080";
+    // private const string BaseUrl = "http://192.168.1.68:8080";
+    // http://31.164.61.221:8080/
 
     public NominatimClient()
     {

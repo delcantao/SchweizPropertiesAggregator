@@ -56,13 +56,13 @@ foreach (var kanton in Kantons)
                 {
                     Id = property.AdId,
                     Address = address,
-                    Area = Convert.ToDecimal(property.AreaValue * 1.0),
-                    Price = Convert.ToDecimal(property.Price.Replace("'", "").OnlyNumbersReturnNumber()),
+                    Area = Convert.ToDecimal(property.AreaValue * 1.0, System.Globalization.CultureInfo.InvariantCulture),
+                    Price = Convert.ToDecimal(property.Price.Replace("'", "").OnlyNumbersReturnNumber(), System.Globalization.CultureInfo.InvariantCulture),
                     Title = property.Title,
                     City = nomRes?.address?.city ?? nomRes?.address?.town ?? nomRes?.address?.village ?? "",
                     // Bathrooms = property.
-                    Longitude = Convert.ToDouble(nomRes.lon),
-                    Latitude = Convert.ToDouble(nomRes.lat),
+                    Longitude = Convert.ToDouble(nomRes.lon, System.Globalization.CultureInfo.InvariantCulture),
+                    Latitude = Convert.ToDouble(nomRes.lat, System.Globalization.CultureInfo.InvariantCulture),
                     Images = property.ImageUrls.ToList(),
                     Currency = "CHF",
                     Bathrooms = 2,
