@@ -48,6 +48,7 @@ public class HomeController(AppDbContext dbContext) : Controller
     double north)
 {
     var properties = await dbContext.Properties
+        .Include(x => x.DealtypeNavigation)
         .Where(x =>
             x.Longitude >= west &&
             x.Longitude <= east &&

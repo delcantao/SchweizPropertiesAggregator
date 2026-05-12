@@ -14,7 +14,7 @@ public partial class Property
 
     public string Currency { get; set; } = null!;
 
-    public double Bedrooms { get; set; }
+    public decimal Bedrooms { get; set; }
 
     public int Bathrooms { get; set; }
 
@@ -32,5 +32,11 @@ public partial class Property
 
     public List<string> Images { get; set; } = null!;
 
-    public string JsonOrig { get; set; } = null!; 
+    public string JsonOrig { get; set; } = null!;
+
+    public string? Origin { get; set; }
+
+    public int? Dealtype { get; set; }
+
+    public virtual Dealtype? DealtypeNavigation { get; set; }
 }

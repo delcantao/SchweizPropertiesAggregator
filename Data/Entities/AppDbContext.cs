@@ -15,6 +15,8 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Dealtype> Dealtypes { get; set; }
+
     public virtual DbSet<Property> Properties { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,6 +30,18 @@ public partial class AppDbContext : DbContext
             .HasPostgresExtension("postgis")
             .HasPostgresExtension("tiger", "postgis_tiger_geocoder")
             .HasPostgresExtension("topology", "postgis_topology");
+
+        modelBuilder.Entity<Dealtype>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("dealtype_pkey");
+
+            entity.ToTable("dealtype");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Description).HasColumnName("description");
+        });
 
         modelBuilder.Entity<Property>(entity =>
         {
@@ -43,11 +57,14 @@ public partial class AppDbContext : DbContext
                 .HasPrecision(10, 2)
                 .HasColumnName("area");
             entity.Property(e => e.Bathrooms).HasColumnName("bathrooms");
-            entity.Property(e => e.Bedrooms).HasColumnName("bedrooms");
+            entity.Property(e => e.Bedrooms)
+                .HasPrecision(10, 2)
+                .HasColumnName("bedrooms");
             entity.Property(e => e.City).HasColumnName("city");
             entity.Property(e => e.Currency)
                 .HasMaxLength(10)
                 .HasColumnName("currency");
+            entity.Property(e => e.Dealtype).HasColumnName("dealtype");
             entity.Property(e => e.Images)
                 .HasColumnType("jsonb")
                 .HasColumnName("images");
@@ -59,10 +76,15 @@ public partial class AppDbContext : DbContext
                 .HasColumnType("geography(Point,4326)")
                 .HasColumnName("location");
             entity.Property(e => e.Longitude).HasColumnName("longitude");
+            entity.Property(e => e.Origin).HasColumnName("origin");
             entity.Property(e => e.Price)
                 .HasPrecision(12, 2)
                 .HasColumnName("price");
             entity.Property(e => e.Title).HasColumnName("title");
+
+            entity.HasOne(d => d.DealtypeNavigation).WithMany(p => p.Properties)
+                .HasForeignKey(d => d.Dealtype)
+                .HasConstraintName("properties_dealtype_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);
