@@ -7,28 +7,67 @@
     <div
         class="border-y border-stone-200 bg-white/95 px-4 py-4 shadow-[0_10px_35px_rgba(15,23,42,0.04)] backdrop-blur sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center gap-3">
-            <input type="text" placeholder="Irgendwo in Zürich"
-                   class="min-w-[18rem] flex-1 rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-medium text-slate-600 shadow-sm" />
-                
-            
+            <!-- Search -->
+            <div class="relative min-w-[18rem] flex-1">
+                <input id="search-input" type="text" placeholder="Pesquisar localização..."
+                       autocomplete="off"
+                       class="w-full rounded-full border border-stone-200 bg-stone-50 px-5 py-4 pr-12 text-sm font-medium text-slate-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <span id="search-spinner" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 hidden">
+                    <svg class="h-4 w-4 animate-spin text-slate-400" viewBox="0 0 24 24" fill="none">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                    </svg>
+                </span>
+                <div id="search-no-result" class="absolute left-0 top-full mt-1 hidden w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-slate-500 shadow-lg">
+                    Nenhum resultado encontrado.
+                </div>
+            </div>
+
+            <!-- Deal type: Alugar / Compra -->
+            <button data-filter="dealtype" data-value="0"
+                class="filter-toggle rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm transition">
+                Alugar
+            </button>
+            <button data-filter="dealtype" data-value="1"
+                class="filter-toggle rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm transition">
+                Comprar
+            </button>
+
+            <!-- Bedrooms select -->
+            <select id="filter-bedrooms"
+                class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer">
+                <option value="">Quartos</option>
+                <option value="1">1+ quarto</option>
+                <option value="2">2+ quartos</option>
+                <option value="3">3+ quartos</option>
+                <option value="4">4+ quartos</option>
+            </select>
+
+            <!-- Area slider -->
+            <div class="flex items-center gap-3 rounded-full border border-stone-200 bg-stone-50 px-5 py-3 shadow-sm">
+                <label for="filter-area" class="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                    Área mín: <span id="filter-area-label">0</span> m²
+                </label>
+                <input id="filter-area" type="range" min="0" max="500" step="10" value="0"
+                       class="w-28 accent-blue-500 cursor-pointer" />
+            </div>
+
+            <!-- Price range -->
+            <div class="flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-5 py-3 shadow-sm">
+                <label class="text-sm font-semibold text-slate-700 whitespace-nowrap">Preço CHF</label>
+                <input id="filter-price-min" type="number" min="0" step="100" placeholder="Mín"
+                       class="w-20 rounded-xl border border-stone-200 bg-white px-2 py-1 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <span class="text-slate-400">–</span>
+                <input id="filter-price-max" type="number" min="0" step="100" placeholder="Máx"
+                       class="w-20 rounded-xl border border-stone-200 bg-white px-2 py-1 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+            </div>
+
             <button
-            class="rounded-full border border-blue-200 bg-blue-50 px-5 py-4 text-sm font-semibold text-blue-700 shadow-sm">Alugar</button>
-            <button
-            class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm">Aluguel</button>
-            <button
-                class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm">Tipos
-                de imovel</button>
-                <button
-                    class="rounded-full border border-blue-200 bg-blue-50 px-5 py-4 text-sm font-semibold text-blue-700 shadow-sm">1+
-                    quartos</button>
-                    <button
-                        class="rounded-full border border-stone-200 bg-stone-50 px-5 py-4 text-sm font-semibold text-slate-700 shadow-sm">Mais
-                        filtros</button>
-                        <button
-                            class="rounded-full border border-stone-200 bg-white px-5 py-4 text-sm font-semibold text-slate-900 shadow-sm">Criar
-                            alerta de imovel</button>
-                        </div>
-                    </div>
+                class="rounded-full border border-stone-200 bg-white px-5 py-4 text-sm font-semibold text-slate-900 shadow-sm">
+                Criar alerta
+            </button>
+        </div>
+    </div>
 
                     <div class="grid min-h-0 flex-1 gap-0 xl:grid-cols-[minmax(0,1.65fr)_minmax(22rem,0.95fr)]">
                         <div class="min-h-0 overflow-y-auto bg-white px-4 py-8 sm:px-6 lg:px-8">
@@ -45,7 +84,7 @@
                                     </div>
                                 </div>
 
-                                <div id="cards" class="pb-6" hx-get="/properties/cards" hx-trigger="load" hx-target="#cards"
+                                <div id="cards" class="pb-6" hx-get="@Global.ROOT/properties/cards" hx-trigger="load" hx-target="#cards"
                                      hx-swap="innerHTML">
                                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
                                         @for (var index = 0; index < 6; index++)
@@ -85,6 +124,6 @@
 
 
                     @section Scripts {
-                        <script src="/js/map.js"></script>
-                        <script src="/js/carrousel.js"></script>
+                        <script src="@Global.ROOT/js/map.js?v=@Global.VERSION"></script>
+                        <script src="@Global.ROOT/js/carrousel.js?v=@Global.VERSION"></script>
                     }

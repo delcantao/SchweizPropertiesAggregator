@@ -1,5 +1,6 @@
 ﻿using Commons;
 using Data.Entities;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using Scraper.Comparis;
@@ -14,14 +15,16 @@ var client = new ComparisClient();
 var max = 999;
 var Kantons = new List<string>
 {
-    "Brugg", "Luzern", "Aarau", "Zug", "Glarus", "Appenzell Ausserrhoden", "Appenzell Innerrhoden", "Basel-Landschaft",
-    "Basel-Stadt", "Bern", "Freiburg", "Genf", "Glarus", "Jura", "Solothurn", "Tessin", "Thurgau", "Uri", "Valais",
-    "Vaud", "Zug", "Winterthur"
+   "Olten", "Brugg", "Spreitenbach", "Basel","Bern", "Winterthur", "Solothurn", "Luzern", "Aarau", "Zug", "Freiburg", "Basel-Stadt", "Basel-Landschaft",
+    "Basel-Stadt", "Bern"
+    // , "Freiburg", "Genf", "Glarus", "Jura", "Solothurn", "Tessin", "Thurgau", "Uri", "Valais",
+    // "Vaud", "Zug", "Winterthur"
 };
 var prop = new Property();
 
 foreach (var kanton in Kantons)
 {
+    max = 999;
     for (int i = 0; i < max; i++)
     {
         var request = new ComparisRequest
@@ -30,7 +33,7 @@ foreach (var kanton in Kantons)
             SearchParams = new SearchParams
             {
                 LocationSearchString = kanton,
-                Radius = 1000,
+                Radius = 20,
             }
         };
         var res = await client.SearchAsync(request);
@@ -43,9 +46,9 @@ foreach (var kanton in Kantons)
 
         var list = comparisResponse.ResultItems.Select(e => e.EssentialInformation.Length > 0 ? e.EssentialInformation[0] : string.Empty).Distinct().ToList()
             ;
-        
-        
-        
+
+
+        var newProperties = 0;
         foreach (var property in comparisResponse.ResultItems)
         {
             try
@@ -54,7 +57,7 @@ foreach (var kanton in Kantons)
                 var exists = await dbContext.Properties
                     .AnyAsync(x => x.Id == property.AdId);
                 if (exists) continue;
-                
+                newProperties++;
                 var address = string.Join(", ", property.Address);
 
                 var nomRes = await nominatimClient.GetAddress(address);
@@ -133,13 +136,16 @@ foreach (var kanton in Kantons)
         }
 
 
+        Console.WriteLine($"New Properties: {newProperties}");
         var file = Path.Combine(ComparisClient.DirectoryResults,
             $"{request.Page + 1}_{request.SearchParams.LocationSearchString}.json");
 
         if (!File.Exists(file))
         {
-            Console.WriteLine("Waiting... 10s");
-            await Task.Delay(10000);
+            // var t = TimeSpan.FromSeconds(new Random(DateTime.Now.Millisecond).Next(10, 67));
+            var t = TimeSpan.FromSeconds(new Random(DateTime.Now.Millisecond).Next(1, 5));
+            Console.WriteLine($"Waiting... {kanton} {i} -  {t.Humanize()}");
+            await Task.Delay(t);
         }
     }
 }

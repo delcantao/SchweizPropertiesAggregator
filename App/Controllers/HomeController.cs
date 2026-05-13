@@ -5,17 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Controllers;
 
+
 public class HomeController(AppDbContext dbContext) : Controller
 {
-    
-
     public IActionResult Index()
     {
         return View();
     }
 
-    
-     [HttpGet("/api/properties")]
+
+    [HttpGet("api/properties")]
     public async Task<IActionResult> Get(
         double west,
         double south,
@@ -40,92 +39,127 @@ public class HomeController(AppDbContext dbContext) : Controller
         return PartialView("_TimePartial", DateTime.Now);
     }
 
-    [HttpGet("/properties/cards")]
+    [HttpGet("properties/cards")]
     public async Task<IActionResult> Cards(
-    double west,
-    double south,
-    double east,
-    double north)
-{
-    var properties = await dbContext.Properties
-        .Include(x => x.DealtypeNavigation)
-        .Where(x =>
-            x.Longitude >= west &&
-            x.Longitude <= east &&
-            x.Latitude >= south &&
-            x.Latitude <= north)
-        .Take(50)
-        .ToListAsync();
-
-    // foreach (var property in properties)
-    // {
-    //     property.Images = property.Images;
-    // }
-    return PartialView("_CardsPartial", properties);
-}
-
-    
-    [HttpGet("/api/properties/map")]
-public async Task<IActionResult> Map(
-    double west,
-    double south,
-    double east,
-    double north)
-{
-    var properties = await dbContext.Properties
-        // .Select(e => e)
-        .Where(x =>
-            x.Longitude >= west &&
-            x.Longitude <= east &&
-            x.Latitude >= south &&
-            x.Latitude <= north)
-        .Take(1000)
-        .ToListAsync();
-
-    // foreach (var property in properties)
-    // {
-    //     try
-    //     {
-    //         property.Images = property.Images.ToJsonObject<List<string>>()!.FirstOrDefault() ?? ;
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //     }
-    // }
-    
-    
-    var geojson = new
+        double west,
+        double south,
+        double east,
+        double north,
+        double? minArea = null,
+        int? minBedrooms = null,
+        int? dealtype = null,
+        decimal? minPrice = null,
+        decimal? maxPrice = null)
     {
-        type = "FeatureCollection",
+        var query = dbContext.Properties
+            .Include(x => x.DealtypeNavigation)
+            .Where(x =>
+                x.Longitude >= west &&
+                x.Longitude <= east &&
+                x.Latitude >= south &&
+                x.Latitude <= north);
 
-        features = properties.Select(x => new
+        if (minArea.HasValue)
+            query = query.Where(x => (double) x.Area >= minArea.Value);
+
+        if (minBedrooms.HasValue)
+            query = query.Where(x => (int) x.Bedrooms >= minBedrooms.Value);
+
+        if (dealtype.HasValue)
+            query = query.Where(x => x.Dealtype == dealtype.Value);
+
+        if (minPrice.HasValue)
+            query = query.Where(x => x.Price >= minPrice.Value);
+
+        if (maxPrice.HasValue)
+            query = query.Where(x => x.Price <= maxPrice.Value);
+
+        var properties = await query
+            .OrderBy(x => x.Price)
+            .Take(50).ToListAsync();
+
+        return PartialView("_CardsPartial", properties);
+    }
+
+
+    [HttpGet("api/properties/map")]
+    public async Task<IActionResult> Map(
+        double west,
+        double south,
+        double east,
+        double north,
+        double? minArea = null,
+        int? minBedrooms = null,
+        int? dealtype = null,
+        decimal? minPrice = null,
+        decimal? maxPrice = null)
+    {
+        var query = dbContext.Properties
+            .Where(x =>
+                x.Longitude >= west &&
+                x.Longitude <= east &&
+                x.Latitude >= south &&
+                x.Latitude <= north);
+
+        if (minArea.HasValue)
+            query = query.Where(x => (double) x.Area >= minArea.Value);
+
+        if (minBedrooms.HasValue)
+            query = query.Where(x => (int) x.Bedrooms >= minBedrooms.Value);
+
+        if (dealtype.HasValue)
+            query = query.Where(x => x.Dealtype == dealtype.Value);
+
+        if (minPrice.HasValue)
+            query = query.Where(x => x.Price >= minPrice.Value);
+
+        if (maxPrice.HasValue)
+            query = query.Where(x => x.Price <= maxPrice.Value);
+
+        var properties = await query.Take(1000).ToListAsync();
+
+        // foreach (var property in properties)
+        // {
+        //     try
+        //     {
+        //         property.Images = property.Images.ToJsonObject<List<string>>()!.FirstOrDefault() ?? ;
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine(e);
+        //     }
+        // }
+
+
+        var geojson = new
         {
-            type = "Feature",
+            type = "FeatureCollection",
 
-            geometry = new
+            features = properties.Select(x => new
             {
-                type = "Point",
+                type = "Feature",
 
-                coordinates = new[]
+                geometry = new
                 {
-                    x.Longitude,
-                    x.Latitude
+                    type = "Point",
+
+                    coordinates = new[]
+                    {
+                        x.Longitude,
+                        x.Latitude
+                    }
+                },
+
+                properties = new
+                {
+                    id = x.Id,
+                    title = x.Title,
+                    price = x.Price,
+                    image = x.Images
                 }
-            },
+            })
+        };
 
-            properties = new
-            {
-                id = x.Id,
-                title = x.Title,
-                price = x.Price,
-                image = x.Images
-            }
-        })
-    };
-
-    return Json(geojson);
-}
-
-
+        return Json(geojson);
+    }
 }
